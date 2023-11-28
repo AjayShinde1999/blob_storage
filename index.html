@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>Personal Blogs</h1>
+
+    <div class="form-wrapper">
+        <form class="new-blog-form">
+            <h2>New Blog</h2>
+            <div>
+                <label>Blog Title:</label>
+                <input type="text" name="title" required class="blog-title" placeholder="Enter Title">
+            </div>
+            <div>
+                <label>Blog Description:</label>
+                <textarea type="text" name="description" required class="blog-description"
+                    placeholder="Enter description"></textarea>
+            </div>
+            <div>
+                <label>Attachment:</label>
+                <input name="attachment" required accept="image/png, image/gif, image/jpeg" class="attachment-input"
+                    type="file">
+            </div>
+            <button>Add Blog</button>
+        </form>
+    </div>
+
+    <div class="blogs-container">
+        <h2>Blogs</h2>
+        <ul class="blogs-list">
+           
+        </ul>
+    </div>
+
+
+
+    <script src="./app.js"></script>
+</body>
+
+</html>
