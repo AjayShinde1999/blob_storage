@@ -28,7 +28,7 @@ $(function () {
     function sendBlogData(data) {
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:8080/api/admin',
+            url: 'https://blobstorage-production.up.railway.app/api/admin',
             data: data,
             cache: false,
             contentType: false,
@@ -47,7 +47,7 @@ $(function () {
     function fetchAllData() {
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8080/api/admin',
+            url: 'https://blobstorage-production.up.railway.app/api/admin',
             dataType: 'json',
             success: (res) => {
                 generateBlog(res);
