@@ -75,6 +75,15 @@ public class AdminServiceImpl implements AdminService {
         Admin admin = adminRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Post Not Found With I'D : " + id)
         );
+
+        if (title.length() > 255) {
+            throw new IllegalArgumentException("Title length must be 255 characters or less");
+        }
+
+        if (description.length() > 600) {
+            throw new IllegalArgumentException("Description length must be 600 characters or less");
+        }
+
         BlobClient blobClient = blobServiceClient.getBlobContainerClient(blobContainerName).getBlobClient(image.getOriginalFilename());
         blobClient.upload(image.getInputStream(), image.getSize(), true);
         String imageUrl = blobClient.getBlobUrl();
