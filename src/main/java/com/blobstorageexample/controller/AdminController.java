@@ -1,7 +1,7 @@
 package com.blobstorageexample.controller;
 
-import com.azure.core.annotation.Get;
 import com.blobstorageexample.model.Admin;
+import com.blobstorageexample.payload.ApiResponse;
 import com.blobstorageexample.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class AdminController {
                               @RequestParam("date") String date,
                               @RequestParam("time") String time
     ) throws IOException {
-        return adminService.saveOneAdmin(title, description, image,date,time);
+        return adminService.saveOneAdmin(title, description, image, date, time);
     }
 
     @GetMapping
@@ -36,8 +36,30 @@ public class AdminController {
         return adminService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/post")
+    @ResponseStatus(HttpStatus.OK)
     public Admin getById(@RequestParam("id") long id) {
         return adminService.getById(id);
+    }
+
+    @DeleteMapping("/post")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse deleteById(@RequestParam("id") long id) {
+        adminService.deleteById(id);
+        ApiResponse response = new ApiResponse();
+        response.setMessage("Deleted Successfully");
+        response.setStatus(true);
+        return response;
+    }
+
+    @PutMapping("/post")
+    public Admin updatePost(@RequestParam("id") long id,
+                            @RequestParam("title") String title,
+                            @RequestParam("description") String description,
+                            @RequestParam("imageUrl") MultipartFile image,
+                            @RequestParam("date") String date,
+                            @RequestParam("time") String time
+    ) throws IOException {
+        return adminService.updateById(id, title, description, image, date, time);
     }
 }

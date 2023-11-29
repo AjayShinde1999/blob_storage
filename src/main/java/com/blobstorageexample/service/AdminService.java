@@ -13,4 +13,8 @@ public interface AdminService {
     List<Admin> getAll();
 
     Admin getById(long id);
+
+    void deleteById(long id);
+
+    Admin updateById(long id, String title, String description, MultipartFile image, String date, String time) throws IOException;
 }

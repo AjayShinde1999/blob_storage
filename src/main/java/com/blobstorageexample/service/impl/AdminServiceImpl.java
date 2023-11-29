@@ -2,6 +2,7 @@ package com.blobstorageexample.service.impl;
 
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.blobstorageexample.exception.ResourceNotFoundException;
 import com.blobstorageexample.model.Admin;
 import com.blobstorageexample.repository.AdminRepository;
 import com.blobstorageexample.service.AdminService;
@@ -28,6 +29,14 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin saveOneAdmin(String title, String description, MultipartFile image, String date, String time) throws IOException {
 
+        if (title.length() > 255) {
+            throw new IllegalArgumentException("Title length must be 255 characters or less");
+        }
+
+        if (description.length() > 600) {
+            throw new IllegalArgumentException("Description length must be 600 characters or less");
+        }
+
         BlobClient blobClient = blobServiceClient.getBlobContainerClient(blobContainerName).getBlobClient(image.getOriginalFilename());
         blobClient.upload(image.getInputStream(), image.getSize(), true);
         String imageUrl = blobClient.getBlobUrl();
@@ -48,7 +57,43 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin getById(long id) {
-        Admin admin = adminRepository.findById(id).get();
-        return admin;
+        return adminRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Post Not Found With I'D : " + id)
+        );
+    }
+
+    @Override
+    public void deleteById(long id) {
+        Admin admin = adminRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Post Not Found With I'D : " + id)
+        );
+        adminRepository.delete(admin);
+    }
+
+    @Override
+    public Admin updateById(long id, String title, String description, MultipartFile image, String date, String time) throws IOException {
+        Admin admin = adminRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Post Not Found With I'D : " + id)
+        );
+
+        if (title.length() > 255) {
+            throw new IllegalArgumentException("Title length must be 255 characters or less");
+        }
+
+        if (description.length() > 600) {
+            throw new IllegalArgumentException("Description length must be 600 characters or less");
+        }
+
+        BlobClient blobClient = blobServiceClient.getBlobContainerClient(blobContainerName).getBlobClient(image.getOriginalFilename());
+        blobClient.upload(image.getInputStream(), image.getSize(), true);
+        String imageUrl = blobClient.getBlobUrl();
+
+        admin.setId(id);
+        admin.setTitle(title);
+        admin.setDescription(description);
+        admin.setImageUrl(imageUrl);
+        admin.setDate(date);
+        admin.setTime(time);
+        return adminRepository.save(admin);
     }
 }
