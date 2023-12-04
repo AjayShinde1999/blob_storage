@@ -17,4 +17,6 @@ public class Admin {
     private String imageUrl;
     private String date;
     private String time;
+    private String userId;
+    private String username;
 }

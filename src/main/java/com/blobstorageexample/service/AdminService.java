@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface AdminService {
 
-    Admin saveOneAdmin(String title, String description, MultipartFile image, String date, String time) throws IOException;
+    Admin saveOneAdmin(String title, String description, MultipartFile image, String date, String time,String userId,String username) throws IOException;
 
-    List<Admin> getAll();
+    List<Admin> getAll(Integer pageNumber,Integer pageSize);
 
     Admin getById(long id);
 
     void deleteById(long id);
 
-    Admin updateById(long id, String title, String description, MultipartFile image, String date, String time) throws IOException;
+    Admin updateById(long id, String title, String description, MultipartFile image, String date, String time,String userId,String username) throws IOException;
 }

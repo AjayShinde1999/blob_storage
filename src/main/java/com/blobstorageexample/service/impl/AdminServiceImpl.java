@@ -8,6 +8,8 @@ import com.blobstorageexample.repository.AdminRepository;
 import com.blobstorageexample.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +29,7 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Admin saveOneAdmin(String title, String description, MultipartFile image, String date, String time) throws IOException {
+    public Admin saveOneAdmin(String title, String description, MultipartFile image, String date, String time,String userId,String username) throws IOException {
 
         if (title.length() > 255) {
             throw new IllegalArgumentException("Title length must be 255 characters or less");
@@ -47,12 +49,16 @@ public class AdminServiceImpl implements AdminService {
         admin.setImageUrl(imageUrl);
         admin.setDate(date);
         admin.setTime(time);
+        admin.setUserId(userId);
+        admin.setUsername(username);
         return adminRepository.save(admin);
     }
 
     @Override
-    public List<Admin> getAll() {
-        return adminRepository.findAll();
+    public List<Admin> getAll(Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
+        Page<Admin> adminRepositoryAll = adminRepository.findAll(pageRequest);
+        return adminRepositoryAll.getContent();
     }
 
     @Override
@@ -71,7 +77,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin updateById(long id, String title, String description, MultipartFile image, String date, String time) throws IOException {
+    public Admin updateById(long id, String title, String description, MultipartFile image, String date, String time,String userId,String username) throws IOException {
         Admin admin = adminRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Post Not Found With I'D : " + id)
         );
@@ -94,6 +100,8 @@ public class AdminServiceImpl implements AdminService {
         admin.setImageUrl(imageUrl);
         admin.setDate(date);
         admin.setTime(time);
+        admin.setUserId(userId);
+        admin.setUsername(username);
         return adminRepository.save(admin);
     }
 }
