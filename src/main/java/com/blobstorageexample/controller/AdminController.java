@@ -25,15 +25,20 @@ public class AdminController {
                               @RequestParam("description") String description,
                               @RequestParam("imageUrl") MultipartFile image,
                               @RequestParam("date") String date,
-                              @RequestParam("time") String time
+                              @RequestParam("time") String time,
+                              @RequestParam("userId") String userId,
+                              @RequestParam("username") String username
     ) throws IOException {
-        return adminService.saveOneAdmin(title, description, image, date, time);
+        return adminService.saveOneAdmin(title, description, image, date, time,userId,username);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Admin> getAll() {
-        return adminService.getAll();
+    public List<Admin> getAll(@RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
+                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize
+
+    ) {
+        return adminService.getAll(pageNumber,pageSize);
     }
 
     @GetMapping("/post")
@@ -58,8 +63,10 @@ public class AdminController {
                             @RequestParam("description") String description,
                             @RequestParam("imageUrl") MultipartFile image,
                             @RequestParam("date") String date,
-                            @RequestParam("time") String time
+                            @RequestParam("time") String time,
+                            @RequestParam("userId") String userId,
+                            @RequestParam("username") String username
     ) throws IOException {
-        return adminService.updateById(id, title, description, image, date, time);
+        return adminService.updateById(id, title, description, image, date, time,userId,username);
     }
 }
